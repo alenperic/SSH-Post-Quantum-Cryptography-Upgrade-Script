@@ -21,30 +21,46 @@ SSH (Secure Shell) is one of the most widely used protocols for secure remote ac
 
 ---
 
-## What Does This Script Do?
+## Features of This Script
 
 This script:
 1. **Checks Compatibility**: Ensures both server and client systems support PQC-capable OpenSSH.
-2. **Backs Up Current Keys**: Creates a secure backup of existing SSH keys and configurations.
-3. **Updates the Client**: Installs PQC-capable OpenSSH and generates PQC keys on the client.
-4. **Upgrades the Server**: Replaces the server’s SSH keys with PQC-compatible keys and updates its configuration.
-5. **Tests Connections**: Verifies that the new keys work for both client-to-server and server-to-client communication.
-6. **Rolls Back if Necessary**: Automatically restores old keys and configurations if an issue is detected during the process.
+2. **Installs OQS-Enabled OpenSSH**: Automatically installs the required OpenSSH version to support PQC if not already installed.
+3. **Backs Up Current Keys**: Creates a secure backup of existing SSH keys and configurations.
+4. **Updates the Client**: Installs PQC-capable OpenSSH and generates PQC keys on the client.
+5. **Upgrades the Server**: Replaces the server’s SSH keys with PQC-compatible keys and updates its configuration.
+6. **Tests Connections**: Verifies that the new keys work for both client-to-server and server-to-client communication.
+7. **Rolls Back if Necessary**: Automatically restores old keys and configurations if an issue is detected during the process.
+
+---
+
+## Requirements
+
+Before running the script, ensure the following requirements are met:
+
+1. **Python 3**: Ensure Python 3 is installed on your system.  
+   Check with:
+   ```bash
+   python3 --version
+   ```
+
+2. **Dependencies**: Install the required Python packages using the included `requirements.txt` file:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+   `requirements.txt` includes:
+   ```
+   paramiko==3.2.0
+   ```
+
+3. **OQS-Enabled OpenSSH**:  
+   - The script will automatically install [Open Quantum Safe OpenSSH](https://github.com/open-quantum-safe/openssh) on both the server and the client if it is not already installed.
+   - This ensures the system supports post-quantum cryptographic algorithms like **ECDSA-p256+Kyber512**.
 
 ---
 
 ## How to Use This Script
-
-### Prerequisites
-
-1. **Install Python 3**: Ensure Python 3 is installed on your system.
-2. **Install Dependencies**:
-   ```bash
-   pip install paramiko
-   ```
-3. **Install OQS-Enabled OpenSSH**:
-   - Both the server and client must support PQC algorithms. Install [Open Quantum Safe OpenSSH](https://github.com/open-quantum-safe/openssh) on both systems.
-   - Follow the installation instructions in the repository.
 
 ### Step-by-Step Instructions
 
@@ -54,23 +70,29 @@ This script:
    cd SSH-Post-Quantum-Cryptography-Upgrade-Script
    ```
 
-2. **Run the Script**:
+2. **Install Dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Run the Script**:
    Execute the script to start the SSH upgrade process:
    ```bash
    python3 update_pqc_ssh.py
    ```
 
-3. **Enter Details**:
+4. **Enter Details**:
    - When prompted, provide the **IP address**, **username**, and **password** for the client machine.
 
-4. **Observe the Process**:
+5. **Observe the Process**:
    - The script will:
+     - Install OQS-enabled OpenSSH if missing.
      - Test the connection to the client.
      - Update the client’s SSH setup to support PQC.
      - Backup and replace the server's SSH keys with PQC keys.
      - Test connections using the new setup.
 
-5. **Verify the Results**:
+6. **Verify the Results**:
    - If the script completes successfully, your SSH connections are now post-quantum ready.
    - If any issues occur, the script will restore your original SSH keys and configurations.
 
@@ -80,6 +102,8 @@ This script:
 
 Here’s what you can expect to see when running the script:
 ```
+[INFO] OQS-enabled OpenSSH is not found. Installing...
+[INFO] Successfully installed OQS-enabled OpenSSH.
 [INFO] Successfully connected to client 192.168.1.100.
 [INFO] Updating SSH on client machine...
 [INFO] Backing up old SSH keys and configurations.
@@ -112,4 +136,4 @@ We welcome contributions to improve the script or enhance its functionality. Fee
 
 ## License
 
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+This project is licensed under the GNU License. See the `LICENSE` file for details.
